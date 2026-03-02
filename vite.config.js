@@ -1,13 +1,26 @@
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
-  // 关键配置：如果你的仓库名是 VUE-PROJECT-2026，则 base 设为 '/VUE-PROJECT-2026/'
-  base: '/vue-Project-2026/',
+  // 核心配置：部署到 Zeabur 根域名时设为 '/'，若部署到子目录则改为 '/子目录名/'
+  base: '/',
   plugins: [vue()],
-  // 可选：确保构建输出目录为 dist（默认就是 dist，可省略）
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
+  // 可选：构建优化，确保输出目录为 dist（Zeabur 默认识别的目录）
   build: {
-    outDir: 'dist'
+    outDir: 'dist', // 必须为 dist，和 Zeabur 输出目录对应
+    assetsDir: 'assets', // 静态资源目录，默认即可
+    sourcemap: false // 生产环境关闭 sourcemap，减小打包体积
+  },
+  // 可选：开发环境配置，不影响部署
+  server: {
+    port: 3000,
+    open: true
   }
 })

@@ -1,0 +1,2 @@
+# 所有请求都指向 index.html，由前端路由接管，解决 history 模式刷新 404 和 MIME 类型错误
+/* /index.html 200
